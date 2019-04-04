@@ -11,16 +11,21 @@ export default class Game extends cc.Component {
     @property(cc.Prefab)
     playerCarFab: cc.Prefab = null;
 
+    @property(cc.Label)
+    scoreLabel: cc.Label = null;
+
     private readonly TRAFFIC_SPAWN_RATE = 1.1;
     private readonly CAR_WIDTH: number = 82;
 
     private scheduler: cc.Scheduler = null;
-    private laneTwo: number;
-    private laneOne: number;
-    private laneThree: number;
+
     private player: Player = null;
     private playerNode: cc.Node = null;
 
+    private laneTwo: number;
+    private laneOne: number;
+    private laneThree: number;
+    private score: number = 0;
     private cvs: cc.Node = null;
 
     onLoad () {
@@ -46,7 +51,6 @@ export default class Game extends cc.Component {
     }
 
     update (dt) {
-        console.log(this.player.getLane());
     }
 
     startGame() {
@@ -57,7 +61,8 @@ export default class Game extends cc.Component {
     resetGame() {
         this.scheduler.unschedule(this.spawnTrafficCar, this);
         this.node.destroyAllChildren();
-
+        this.score = 0;
+        this.scoreLabel.string = "Score: " + 0;
         //TODO add button click for example
         this.startGame();
     }
@@ -69,7 +74,6 @@ export default class Game extends cc.Component {
         this.player.game = this;
         this.player.resetLane();
     }
-
 
     spawnTrafficCar() {
         const newCar = cc.instantiate(this.trafficCarFab);
@@ -91,6 +95,11 @@ export default class Game extends cc.Component {
             default:
                 throw new Error("Invalid car lane. Got: " + lane);
         }
+    }
+    
+    updateScore() {
+        this.score++;
+        this.scoreLabel.string = "Score: " + this.score;
     }
 
     getMainCanvas() {
@@ -128,6 +137,10 @@ export default class Game extends cc.Component {
 
     getLaneThreeX() {
         return this.laneThree;
+    }
+
+    getPlayer() {
+        return this.player;
     }
 }
 
