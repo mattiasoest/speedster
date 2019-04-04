@@ -1,10 +1,15 @@
+import Player from "./Player";
+
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class Game extends cc.Component {
 
     @property(cc.Prefab)
-    trafficCar: cc.Prefab = null;
+    trafficCarFab: cc.Prefab = null;
+
+    @property(cc.Prefab)
+    playerCarFab: cc.Prefab = null;
 
     private readonly TRAFFIC_SPAWN_RATE = 1.1;
     private readonly CAR_WIDTH: number = 82;
@@ -13,6 +18,8 @@ export default class Game extends cc.Component {
     private laneTwo: number;
     private laneOne: number;
     private laneThree: number;
+    private player: Player = null;
+    private playerNode: cc.Node = null;
 
     private cvs: cc.Node = null;
 
@@ -23,16 +30,33 @@ export default class Game extends cc.Component {
         this.laneOne = midPoint - this.CAR_WIDTH * 1.5;
         this.laneThree = midPoint + this.CAR_WIDTH * 1.5;
         this.scheduler = cc.director.getScheduler();
+
+        // INPUT
+        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
     }
 
     start () {
+        this.createPlayer();
         this.scheduler.schedule(this.spawnTrafficCar, this, this.TRAFFIC_SPAWN_RATE, false);
     }
 
     // update (dt) {}
 
+    resetPlayer() {
+        this.player.game = this;
+        this.player.resetLane();
+    }
+
+    createPlayer() {
+        this.playerNode = cc.instantiate(this.playerCarFab);
+        this.player = this.playerNode.getComponent('Player'); 
+        this.node.addChild(this.playerNode);
+        this.resetPlayer();
+    }
+
+
     spawnTrafficCar() {
-        const newCar = cc.instantiate(this.trafficCar);
+        const newCar = cc.instantiate(this.trafficCarFab);
         this.node.addChild(newCar);
         newCar.setPosition(cc.v2(this.generateRandomCarLane(), this.cvs.height * 1.2));
         // Leave a reference to the game object.
@@ -56,4 +80,43 @@ export default class Game extends cc.Component {
     getMainCanvas() {
         return this.cvs;
     }
+
+    onKeyDown(event: cc.Event.EventKeyboard) {
+        console.log("EVENT:" + event.keyCode);
+        
+        let currentLane = this.player.getLane();
+        console.log("LANE: " + currentLane);
+        
+        switch(event.keyCode) {
+            case cc.macro.KEY.left:
+                if (currentLane === 2 || currentLane === 3) {
+                    this.player.setLane(--currentLane);
+                }
+                break;
+            case cc.macro.KEY.right:
+                if (currentLane === 1 || currentLane === 2) {
+                    this.player.setLane(++currentLane);
+                }
+                break;
+            case cc.macro.KEY.up:
+                break;
+            case cc.macro.KEY.down:
+                break;
+            case cc.macro.KEY.space:
+                break;
+        }
+    }
+    getLaneOneX() {
+        return this.laneOne;
+    }
+
+    getLaneTwoX() {
+        return this.laneTwo;
+    }
+
+    getLaneThreeX() {
+        return this.laneThree;
+    }
 }
+
+
