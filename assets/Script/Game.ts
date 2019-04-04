@@ -14,7 +14,7 @@ export default class Game extends cc.Component {
     @property(cc.Label)
     scoreLabel: cc.Label = null;
 
-    private readonly TRAFFIC_SPAWN_RATE = 1.1;
+    private readonly TRAFFIC_SPAWN_RATE = 0.42;
     private readonly CAR_WIDTH: number = 82;
 
     private scheduler: cc.Scheduler = null;

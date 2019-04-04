@@ -4,7 +4,7 @@ const {ccclass, property} = cc._decorator;
 export default class BumpScroll extends cc.Component {
 
 
-    private readonly scrollSpeed: number = 960;
+    private readonly scrollSpeed: number = 2300;
     private readonly lowBound: number = -920;
     // LIFE-CYCLE CALLBACKS:
 

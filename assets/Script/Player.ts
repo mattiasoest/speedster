@@ -44,7 +44,6 @@ export default class Player extends cc.Component {
     }
 
     onBeginContact(contact, selfCollider, otherCollider) {
-        console.log("CONTACT");
         otherCollider.node.destroy();
         selfCollider.node.destroy();
         this.game.resetGame();
