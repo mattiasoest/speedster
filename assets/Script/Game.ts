@@ -31,27 +31,43 @@ export default class Game extends cc.Component {
         this.laneThree = midPoint + this.CAR_WIDTH * 1.5;
         this.scheduler = cc.director.getScheduler();
 
+
+        // Setup physics engine.
+        let physicsManager = cc.director.getPhysicsManager();
+        physicsManager.enabled = true;
+        physicsManager.gravity = cc.v2(0, 0);
+
         // INPUT
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
     }
 
     start () {
+        this.startGame();
+    }
+
+    update (dt) {
+        console.log(this.player.getLane());
+    }
+
+    startGame() {
         this.createPlayer();
         this.scheduler.schedule(this.spawnTrafficCar, this, this.TRAFFIC_SPAWN_RATE, false);
     }
 
-    // update (dt) {}
+    resetGame() {
+        this.scheduler.unschedule(this.spawnTrafficCar, this);
+        this.node.destroyAllChildren();
 
-    resetPlayer() {
-        this.player.game = this;
-        this.player.resetLane();
+        //TODO add button click for example
+        this.startGame();
     }
 
     createPlayer() {
         this.playerNode = cc.instantiate(this.playerCarFab);
         this.player = this.playerNode.getComponent('Player'); 
         this.node.addChild(this.playerNode);
-        this.resetPlayer();
+        this.player.game = this;
+        this.player.resetLane();
     }
 
 
@@ -82,11 +98,7 @@ export default class Game extends cc.Component {
     }
 
     onKeyDown(event: cc.Event.EventKeyboard) {
-        console.log("EVENT:" + event.keyCode);
-        
         let currentLane = this.player.getLane();
-        console.log("LANE: " + currentLane);
-        
         switch(event.keyCode) {
             case cc.macro.KEY.left:
                 if (currentLane === 2 || currentLane === 3) {

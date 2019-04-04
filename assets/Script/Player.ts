@@ -5,7 +5,6 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class Player extends cc.Component {
 
-
     // Three lanes; 1 ,2 ,3
     private currentLane: number
 
@@ -13,7 +12,6 @@ export default class Player extends cc.Component {
     // onLoad () {}
 
     start () {
-
     }
 
     update (dt) {
@@ -21,8 +19,7 @@ export default class Player extends cc.Component {
     }
 
     resetLane() {
-        this.currentLane = 2;
-        this.node.x = this.game.getLaneTwoX();
+        this.setLane(2);
     }
 
     setLane(lane: number) {
@@ -37,12 +34,19 @@ export default class Player extends cc.Component {
                 this.node.x = this.game.getLaneThreeX();
                 break;
             default:
-            throw new Error("Invalid car lane. Got: " + lane);
+                throw new Error("Invalid car lane. Got: " + lane);
         }
         this.currentLane = lane;
     }
 
     getLane() {
         return this.currentLane;
+    }
+
+    onBeginContact(contact, selfCollider, otherCollider) {
+        console.log("CONTACT");
+        otherCollider.node.destroy();
+        selfCollider.node.destroy();
+        this.game.resetGame();
     }
 }
