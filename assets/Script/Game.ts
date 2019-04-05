@@ -34,7 +34,7 @@ export default class Game extends cc.Component {
     bgMusic: cc.AudioClip = null;
     // ======================
 
-    private readonly TRAFFIC_SPAWN_RATE = 0.42;
+    private readonly TRAFFIC_SPAWN_RATE = 0.38;
     private readonly CAR_WIDTH: number = 82;
 
     private scheduler: cc.Scheduler = null;

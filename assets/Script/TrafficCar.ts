@@ -5,7 +5,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class TrafficCar extends cc.Component {
 
-    private readonly trafficSpeed = 800;
+    private readonly trafficSpeed = 850;
     
     private lowBound: number = 100;
     private isPassed = false;
