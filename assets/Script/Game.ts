@@ -29,6 +29,9 @@ export default class Game extends cc.Component {
 
     @property(cc.AudioClip)
     pointsSound: cc.AudioClip = null;
+
+    @property(cc.AudioClip)
+    bgMusic: cc.AudioClip = null;
     // ======================
 
     private readonly TRAFFIC_SPAWN_RATE = 0.42;
@@ -64,6 +67,8 @@ export default class Game extends cc.Component {
     }
 
     start () {
+        cc.audioEngine.playMusic(this.bgMusic,true);
+        cc.audioEngine.setMusicVolume(0.4);
         this.startGame();
     }
 

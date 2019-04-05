@@ -20,6 +20,9 @@
         "__id__": 29
       },
       {
+        "__id__": 33
+      },
+      {
         "__id__": 32
       }
     ],
@@ -1184,6 +1187,24 @@
     "scoreLabel": {
       "__id__": 31
     },
+    "carCrashSound": {
+      "__uuid__": "7396aa02-144c-4726-a4f5-44b686858f88"
+    },
+    "startGameSound": {
+      "__uuid__": "400a19a7-48b2-4249-9b83-ed98889ba56d"
+    },
+    "turnLeftSound": {
+      "__uuid__": "388fa5c4-c22c-4789-9a14-4748bdb81983"
+    },
+    "turnRightSound": {
+      "__uuid__": "d0722d7e-62fa-4ede-9452-9b49f212ee52"
+    },
+    "pointsSound": {
+      "__uuid__": "b72d3bfb-056b-4adf-82ff-d16e73d1abe0"
+    },
+    "bgMusic": {
+      "__uuid__": "12378750-c7c7-4cb5-a140-5f0f0299096f"
+    },
     "_id": "6995dmFhtJ7ahk08I81yry"
   },
   {
@@ -1247,8 +1268,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 198,
-      "y": 934,
+      "x": 209,
+      "y": 869,
       "z": 0
     },
     "_scale": {
@@ -1272,5 +1293,61 @@
     "_rotationX": 0,
     "_rotationY": 0,
     "_id": "7cBCxQUWpBwqp2t1HXH3jN"
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "SoundManager",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 1
+    },
+    "_children": [],
+    "_active": true,
+    "_level": 1,
+    "_components": [],
+    "_prefab": null,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 0,
+      "height": 0
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_quat": {
+      "__type__": "cc.Quat",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 1
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_zIndex": 0,
+    "_is3DNode": false,
+    "groupIndex": 0,
+    "_id": "56bh8IPiJFLr2vdTJ09Lzo"
   }
 ]
