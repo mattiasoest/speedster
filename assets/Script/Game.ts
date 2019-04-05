@@ -14,6 +14,23 @@ export default class Game extends cc.Component {
     @property(cc.Label)
     scoreLabel: cc.Label = null;
 
+    // ======= SOUNDS =======
+    @property(cc.AudioClip)
+    carCrashSound: cc.AudioClip = null;
+
+    @property(cc.AudioClip)
+    startGameSound: cc.AudioClip = null;
+
+    @property(cc.AudioClip)
+    turnLeftSound: cc.AudioClip = null;
+
+    @property(cc.AudioClip)
+    turnRightSound: cc.AudioClip = null;
+
+    @property(cc.AudioClip)
+    pointsSound: cc.AudioClip = null;
+    // ======================
+
     private readonly TRAFFIC_SPAWN_RATE = 0.42;
     private readonly CAR_WIDTH: number = 82;
 
@@ -59,6 +76,7 @@ export default class Game extends cc.Component {
     }
 
     resetGame() {
+        cc.audioEngine.play(this.carCrashSound, false, 0.5);
         this.scheduler.unschedule(this.spawnTrafficCar, this);
         this.node.destroyAllChildren();
         this.score = 0;
@@ -99,6 +117,9 @@ export default class Game extends cc.Component {
     
     updateScore() {
         this.score++;
+        if (this.score % 10 === 0) {
+            cc.audioEngine.play(this.pointsSound, false, 0.5);
+        }
         this.scoreLabel.string = "Score: " + this.score;
     }
 
@@ -111,11 +132,13 @@ export default class Game extends cc.Component {
         switch(event.keyCode) {
             case cc.macro.KEY.left:
                 if (currentLane === 2 || currentLane === 3) {
+                    cc.audioEngine.play(this.turnLeftSound, false, 0.5);
                     this.player.setLane(--currentLane);
                 }
                 break;
             case cc.macro.KEY.right:
                 if (currentLane === 1 || currentLane === 2) {
+                    cc.audioEngine.play(this.turnRightSound, false, 0.5);
                     this.player.setLane(++currentLane);
                 }
                 break;
