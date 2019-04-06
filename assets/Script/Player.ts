@@ -9,7 +9,6 @@ export default class Player extends cc.Component {
     private currentLane: number
 
     game: Game = null;
-    // onLoad () {}
 
     start () {
     }

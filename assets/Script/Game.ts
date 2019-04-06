@@ -62,8 +62,6 @@ export default class Game extends cc.Component {
     private highScore: number = 0;
     private cvs: cc.Node = null;
 
-
-    private sameLane: boolean = false;
     private previousLanePos: number = 0;
 
     public readonly GAME_STATE = { PLAY : 0, MENU : 1 }
@@ -78,19 +76,16 @@ export default class Game extends cc.Component {
         this.laneThree = midPoint + this.CAR_WIDTH * 1.5;
         this.scheduler = cc.director.getScheduler();
 
-
         // Setup physics engine.
         let physicsManager = cc.director.getPhysicsManager();
         physicsManager.enabled = true;
         physicsManager.gravity = cc.v2(0, 0);
 
         // INPUT
-
         if (cc.sys.isMobile) {
-            // this.cvs.on(cc.Node.EventType.TOUCH_START, this.onTouch, this);
+            this.cvs.on(cc.Node.EventType.TOUCH_START, this.onTouch, this);
         }
         else {
-            this.cvs.on(cc.Node.EventType.TOUCH_START, this.onTouch, this);
             cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         }
     }
@@ -104,9 +99,6 @@ export default class Game extends cc.Component {
         cc.audioEngine.playMusic(this.bgMusic,true);
         cc.audioEngine.setMusicVolume(0.4);
         this.activateMenu();
-    }
-
-    update (dt) {
     }
 
     startGame() {
@@ -194,7 +186,6 @@ export default class Game extends cc.Component {
         this.scoreLabel.string = "Score: " + this.score;
     }
 
-
     checkLocalHighScore() {
         let localBest = cc.sys.localStorage.getItem(this.BEST_SCORE_KEY);
         if (localBest !== null) {
@@ -207,8 +198,20 @@ export default class Game extends cc.Component {
         cc.sys.localStorage.setItem(this.BEST_SCORE_KEY, this.highScore);
     }
 
-    getMainCanvas() {
-        return this.cvs;
+    switchLeft() {
+        let currentLane = this.player.getLane();
+        if (currentLane === 2 || currentLane === 3) {
+            cc.audioEngine.play(this.turnLeftSound, false, 0.5);
+            this.player.setLane(--currentLane);
+        }
+    }
+
+    switchRight() {
+        let currentLane = this.player.getLane();
+        if (currentLane === 1 || currentLane === 2) {
+            cc.audioEngine.play(this.turnRightSound, false, 0.5);
+            this.player.setLane(++currentLane);
+        }
     }
     
     // ============ CONTROLS ============
@@ -232,22 +235,10 @@ export default class Game extends cc.Component {
                 break;
         }
     }
-    // ==================================
-
-    switchLeft() {
-        let currentLane = this.player.getLane();
-        if (currentLane === 2 || currentLane === 3) {
-            cc.audioEngine.play(this.turnLeftSound, false, 0.5);
-            this.player.setLane(--currentLane);
-        }
-    }
-
-    switchRight() {
-        let currentLane = this.player.getLane();
-        if (currentLane === 1 || currentLane === 2) {
-            cc.audioEngine.play(this.turnRightSound, false, 0.5);
-            this.player.setLane(++currentLane);
-        }
+    
+    // ============ GETTERS =============
+    getMainCanvas() {
+        return this.cvs;
     }
 
     getLaneOneX() {

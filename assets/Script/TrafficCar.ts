@@ -13,9 +13,6 @@ export default class TrafficCar extends cc.Component {
 
     game: Game = null;
 
-    // onLoad () {
-    // }
-
     start () {        
         this.lowBound = -this.game.getMainCanvas().height * 0.62;
     }
