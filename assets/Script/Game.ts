@@ -5,6 +5,9 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class Game extends cc.Component {
 
+    @property(cc.Node)
+    menuNode: cc.Node = null;
+
     @property(cc.Prefab)
     trafficCarFab: cc.Prefab = null;
 
@@ -75,12 +78,16 @@ export default class Game extends cc.Component {
 
         // INPUT
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+        // cc.systemEvent.on(cc.SystemEvent.EventType.MOUSE, this.startGame, this);
+
     }
 
     start () {
+        this.menuNode.on(cc.Node.EventType.MOUSE_DOWN, this.startGame, this);
         this.touchToStartLabel.node.runAction(cc.repeatForever(cc.sequence(cc.fadeOut(1.4),cc.delayTime(0.2), cc.fadeIn(1.4))));
         cc.audioEngine.playMusic(this.bgMusic,true);
         cc.audioEngine.setMusicVolume(0.4);
+        this.activateMenu();
     }
 
     update (dt) {
@@ -96,11 +103,13 @@ export default class Game extends cc.Component {
     activateMenu() {
         this.touchToStartLabel.enabled = true;
         this.titleLabel.enabled = true;
+        this.scoreLabel.enabled = false;
     }
 
     deactivateMenu() {
         this.touchToStartLabel.enabled = false;
         this.titleLabel.enabled = false;
+        this.scoreLabel.enabled = true;
     }
 
     resetGame() {
