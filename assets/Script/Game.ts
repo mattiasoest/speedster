@@ -107,6 +107,8 @@ export default class Game extends cc.Component {
             this.createPlayer();
             this.scheduler.schedule(this.spawnTrafficCar, this, this.TRAFFIC_SPAWN_RATE, false);
             this.currentState = this.GAME_STATE.PLAY;
+            cc.audioEngine.play(this.startGameSound, false, 0.3);
+
         }
     }
 
