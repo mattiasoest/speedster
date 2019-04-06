@@ -92,9 +92,6 @@ export default class Game extends cc.Component {
 
     start () {
         this.checkLocalHighScore();
-        // Both mobile and pc.
-        this.menuNode.on(cc.Node.EventType.MOUSE_DOWN, this.startGame, this);
-
         this.touchToStartLabel.node.runAction(cc.repeatForever(cc.sequence(cc.fadeOut(1.4),cc.delayTime(0.2), cc.fadeIn(1.4))));
         cc.audioEngine.playMusic(this.bgMusic,true);
         cc.audioEngine.setMusicVolume(0.3);
@@ -218,6 +215,10 @@ export default class Game extends cc.Component {
     
     // ============ CONTROLS ============
     onTouch(event: cc.Event.EventTouch) {
+        if (this.currentState === this.GAME_STATE.MENU) {
+            this.startGame();
+            return;
+        }
         if (this.currentState === this.GAME_STATE.PLAY) {
             event.touch.getLocationX() < this.cvs.width / 2 ? this.switchLeft() : this.switchRight();
         }
