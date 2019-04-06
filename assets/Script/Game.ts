@@ -81,14 +81,14 @@ export default class Game extends cc.Component {
         physicsManager.enabled = true;
         physicsManager.gravity = cc.v2(0, 0);
 
-        // INPUT
-        if (cc.sys.isMobile) {
-            this.cvs.on(cc.Node.EventType.TOUCH_START, this.onTouch, this);
-        }
-        else {
+        // Input methods
+        if (!cc.sys.isMobile) {
             cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         }
+        // Let both mobile and pc have touch/click listner.
+        this.cvs.on(cc.Node.EventType.TOUCH_START, this.onTouch, this);
     }
+
 
     start () {
         this.checkLocalHighScore();
@@ -235,7 +235,7 @@ export default class Game extends cc.Component {
                 break;
         }
     }
-    
+
     // ============ GETTERS =============
     getMainCanvas() {
         return this.cvs;
