@@ -97,7 +97,7 @@ export default class Game extends cc.Component {
 
         this.touchToStartLabel.node.runAction(cc.repeatForever(cc.sequence(cc.fadeOut(1.4),cc.delayTime(0.2), cc.fadeIn(1.4))));
         cc.audioEngine.playMusic(this.bgMusic,true);
-        cc.audioEngine.setMusicVolume(0.4);
+        cc.audioEngine.setMusicVolume(0.3);
         this.activateMenu();
     }
 
