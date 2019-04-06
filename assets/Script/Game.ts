@@ -85,14 +85,21 @@ export default class Game extends cc.Component {
         physicsManager.gravity = cc.v2(0, 0);
 
         // INPUT
-        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
-        // cc.systemEvent.on(cc.SystemEvent.EventType.MOUSE, this.startGame, this);
 
+        if (cc.sys.isMobile) {
+            // this.cvs.on(cc.Node.EventType.TOUCH_START, this.onTouch, this);
+        }
+        else {
+            this.cvs.on(cc.Node.EventType.TOUCH_START, this.onTouch, this);
+            cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+        }
     }
 
     start () {
         this.checkLocalHighScore();
+        // Both mobile and pc.
         this.menuNode.on(cc.Node.EventType.MOUSE_DOWN, this.startGame, this);
+
         this.touchToStartLabel.node.runAction(cc.repeatForever(cc.sequence(cc.fadeOut(1.4),cc.delayTime(0.2), cc.fadeIn(1.4))));
         cc.audioEngine.playMusic(this.bgMusic,true);
         cc.audioEngine.setMusicVolume(0.4);
@@ -103,10 +110,12 @@ export default class Game extends cc.Component {
     }
 
     startGame() {
-        this.deactivateMenu();
-        this.createPlayer();
-        this.scheduler.schedule(this.spawnTrafficCar, this, this.TRAFFIC_SPAWN_RATE, false);
-        this.currentState = this.GAME_STATE.PLAY;
+        if (this.currentState === this.GAME_STATE.MENU) {
+            this.deactivateMenu();
+            this.createPlayer();
+            this.scheduler.schedule(this.spawnTrafficCar, this, this.TRAFFIC_SPAWN_RATE, false);
+            this.currentState = this.GAME_STATE.PLAY;
+        }
     }
 
     activateMenu() {
@@ -190,7 +199,7 @@ export default class Game extends cc.Component {
         let localBest = cc.sys.localStorage.getItem(this.BEST_SCORE_KEY);
         if (localBest !== null) {
             this.highScore = Number(localBest);
-            this.highScoreLabel.string = "High score: " + this.highScore;
+            this.highScoreLabel.string = "High Score: " + this.highScore;
         }
     }
 
@@ -201,36 +210,46 @@ export default class Game extends cc.Component {
     getMainCanvas() {
         return this.cvs;
     }
+    
+    // ============ CONTROLS ============
+    onTouch(event: cc.Event.EventTouch) {
+        if (this.currentState === this.GAME_STATE.PLAY) {
+            event.touch.getLocationX() < this.cvs.width / 2 ? this.switchLeft() : this.switchRight();
+        }
+    }
 
     onKeyDown(event: cc.Event.EventKeyboard) {
-
         if (this.currentState === this.GAME_STATE.MENU) {
             this.startGame();
             return;
         }
-
-        let currentLane = this.player.getLane();
         switch(event.keyCode) {
             case cc.macro.KEY.left:
-                if (currentLane === 2 || currentLane === 3) {
-                    cc.audioEngine.play(this.turnLeftSound, false, 0.5);
-                    this.player.setLane(--currentLane);
-                }
+                this.switchLeft();
                 break;
             case cc.macro.KEY.right:
-                if (currentLane === 1 || currentLane === 2) {
-                    cc.audioEngine.play(this.turnRightSound, false, 0.5);
-                    this.player.setLane(++currentLane);
-                }
-                break;
-            case cc.macro.KEY.up:
-                break;
-            case cc.macro.KEY.down:
-                break;
-            case cc.macro.KEY.space:
+                this.switchRight();
                 break;
         }
     }
+    // ==================================
+
+    switchLeft() {
+        let currentLane = this.player.getLane();
+        if (currentLane === 2 || currentLane === 3) {
+            cc.audioEngine.play(this.turnLeftSound, false, 0.5);
+            this.player.setLane(--currentLane);
+        }
+    }
+
+    switchRight() {
+        let currentLane = this.player.getLane();
+        if (currentLane === 1 || currentLane === 2) {
+            cc.audioEngine.play(this.turnRightSound, false, 0.5);
+            this.player.setLane(++currentLane);
+        }
+    }
+
     getLaneOneX() {
         return this.laneOne;
     }
@@ -247,5 +266,3 @@ export default class Game extends cc.Component {
         return this.player;
     }
 }
-
-
