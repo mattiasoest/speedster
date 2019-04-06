@@ -53,9 +53,9 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.6428490158152237,
-      "y": 0.6428490158152237,
-      "z": 0.6428490158152237
+      "x": 0.6161563837618257,
+      "y": 0.6161563837618257,
+      "z": 0.6161563837618257
     },
     "_quat": {
       "__type__": "cc.Quat",
@@ -1202,8 +1202,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 351.56,
-      "height": 55
+      "width": 322.2,
+      "height": 75
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1251,11 +1251,13 @@
     "_useOriginalSize": false,
     "_string": "Touch To Start",
     "_N$string": "Touch To Start",
-    "_fontSize": 55,
-    "_lineHeight": 55,
+    "_fontSize": 65,
+    "_lineHeight": 75,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "2b503f3a-af51-42c6-ab68-2f44efc8a0e0"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
@@ -1289,8 +1291,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 343.08,
-      "height": 95
+      "width": 366.79,
+      "height": 150
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1338,11 +1340,13 @@
     "_useOriginalSize": false,
     "_string": "F Traffic",
     "_N$string": "F Traffic",
-    "_fontSize": 95,
-    "_lineHeight": 95,
+    "_fontSize": 124,
+    "_lineHeight": 150,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "2b503f3a-af51-42c6-ab68-2f44efc8a0e0"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
@@ -1469,11 +1473,13 @@
     "_useOriginalSize": false,
     "_string": "Score: 0",
     "_N$string": "Score: 0",
-    "_fontSize": 40,
-    "_lineHeight": 40,
+    "_fontSize": 50,
+    "_lineHeight": 70,
     "_enableWrapText": false,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "2b503f3a-af51-42c6-ab68-2f44efc8a0e0"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_N$horizontalAlign": 0,
     "_N$verticalAlign": 1,
@@ -1507,8 +1513,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 148.96,
-      "height": 40
+      "width": 141.45,
+      "height": 70
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
