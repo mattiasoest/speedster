@@ -14,6 +14,12 @@ export default class Game extends cc.Component {
     @property(cc.Label)
     scoreLabel: cc.Label = null;
 
+    @property(cc.Label)
+    touchToStartLabel: cc.Label = null;
+
+    @property(cc.Label)
+    titleLabel: cc.Label = null;
+
     // ======= SOUNDS =======
     @property(cc.AudioClip)
     carCrashSound: cc.AudioClip = null;
@@ -72,6 +78,7 @@ export default class Game extends cc.Component {
     }
 
     start () {
+        this.touchToStartLabel.node.runAction(cc.repeatForever(cc.sequence(cc.fadeOut(1.4),cc.delayTime(0.2), cc.fadeIn(1.4))));
         cc.audioEngine.playMusic(this.bgMusic,true);
         cc.audioEngine.setMusicVolume(0.4);
     }
@@ -80,9 +87,20 @@ export default class Game extends cc.Component {
     }
 
     startGame() {
+        this.deactivateMenu();
         this.createPlayer();
         this.scheduler.schedule(this.spawnTrafficCar, this, this.TRAFFIC_SPAWN_RATE, false);
         this.currentState = this.GAME_STATE.PLAY;
+    }
+
+    activateMenu() {
+        this.touchToStartLabel.enabled = true;
+        this.titleLabel.enabled = true;
+    }
+
+    deactivateMenu() {
+        this.touchToStartLabel.enabled = false;
+        this.titleLabel.enabled = false;
     }
 
     resetGame() {
@@ -93,6 +111,7 @@ export default class Game extends cc.Component {
         this.scoreLabel.string = "Score: " + 0;
 
         this.currentState = this.GAME_STATE.MENU;
+        this.activateMenu();
     }
 
     createPlayer() {
