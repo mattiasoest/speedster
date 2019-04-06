@@ -48,6 +48,11 @@ export default class Game extends cc.Component {
     private score: number = 0;
     private cvs: cc.Node = null;
 
+
+    public readonly GAME_STATE = { PLAY : 0, MENU : 1 }
+
+    currentState = this.GAME_STATE.MENU;
+
     onLoad () {
         this.cvs = cc.find("Canvas");
         let midPoint = this.cvs.width / 2;
@@ -69,7 +74,6 @@ export default class Game extends cc.Component {
     start () {
         cc.audioEngine.playMusic(this.bgMusic,true);
         cc.audioEngine.setMusicVolume(0.4);
-        this.startGame();
     }
 
     update (dt) {
@@ -78,6 +82,7 @@ export default class Game extends cc.Component {
     startGame() {
         this.createPlayer();
         this.scheduler.schedule(this.spawnTrafficCar, this, this.TRAFFIC_SPAWN_RATE, false);
+        this.currentState = this.GAME_STATE.PLAY;
     }
 
     resetGame() {
@@ -86,8 +91,8 @@ export default class Game extends cc.Component {
         this.node.destroyAllChildren();
         this.score = 0;
         this.scoreLabel.string = "Score: " + 0;
-        //TODO add button click for example
-        this.startGame();
+
+        this.currentState = this.GAME_STATE.MENU;
     }
 
     createPlayer() {
@@ -133,6 +138,12 @@ export default class Game extends cc.Component {
     }
 
     onKeyDown(event: cc.Event.EventKeyboard) {
+
+        if (this.currentState === this.GAME_STATE.MENU) {
+            this.startGame();
+            return;
+        }
+
         let currentLane = this.player.getLane();
         switch(event.keyCode) {
             case cc.macro.KEY.left:
