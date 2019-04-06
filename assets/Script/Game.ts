@@ -43,7 +43,7 @@ export default class Game extends cc.Component {
     bgMusic: cc.AudioClip = null;
     // ======================
 
-    private readonly TRAFFIC_SPAWN_RATE = 0.38;
+    private readonly TRAFFIC_SPAWN_RATE = 0.36;
     private readonly CAR_WIDTH: number = 82;
 
     private scheduler: cc.Scheduler = null;
@@ -57,6 +57,9 @@ export default class Game extends cc.Component {
     private score: number = 0;
     private cvs: cc.Node = null;
 
+
+    private sameLane: boolean = false;
+    private previousLanePos: number = 0;
 
     public readonly GAME_STATE = { PLAY : 0, MENU : 1 }
 
@@ -140,7 +143,13 @@ export default class Game extends cc.Component {
     }
 
     generateRandomCarLane() {
-        const lane = Math.floor(Math.random() * 3);
+        let lane = Math.floor(Math.random() * 3);
+
+        // Do one extra random if we go the same lane.
+        if (this.previousLanePos === lane) {
+            lane = Math.floor(Math.random() * 3);
+        }
+        this.previousLanePos = lane;
         switch(lane) {
             case 0:
                 return this.laneOne;
