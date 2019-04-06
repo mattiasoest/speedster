@@ -20,13 +20,13 @@
         "__id__": 29
       },
       {
-        "__id__": 34
+        "__id__": 36
       },
       {
-        "__id__": 38
+        "__id__": 40
       },
       {
-        "__id__": 37
+        "__id__": 39
       }
     ],
     "_active": false,
@@ -53,9 +53,9 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.6161563837618257,
-      "y": 0.6161563837618257,
-      "z": 0.6161563837618257
+      "x": 1,
+      "y": 1,
+      "z": 1
     },
     "_quat": {
       "__type__": "cc.Quat",
@@ -1126,6 +1126,9 @@
       },
       {
         "__id__": 32
+      },
+      {
+        "__id__": 34
       }
     ],
     "_active": true,
@@ -1196,8 +1199,8 @@
     "_color": {
       "__type__": "cc.Color",
       "r": 255,
-      "g": 255,
-      "b": 255,
+      "g": 22,
+      "b": 22,
       "a": 255
     },
     "_contentSize": {
@@ -1285,8 +1288,8 @@
     "_color": {
       "__type__": "cc.Color",
       "r": 255,
-      "g": 255,
-      "b": 255,
+      "g": 22,
+      "b": 22,
       "a": 255
     },
     "_contentSize": {
@@ -1356,6 +1359,95 @@
   },
   {
     "__type__": "cc.Node",
+    "_name": "High Score",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 29
+    },
+    "_children": [],
+    "_active": true,
+    "_level": 2,
+    "_components": [
+      {
+        "__id__": 35
+      }
+    ],
+    "_prefab": null,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 225.2,
+      "height": 70
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": -68,
+      "y": 395,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_quat": {
+      "__type__": "cc.Quat",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 1
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_zIndex": 0,
+    "_is3DNode": false,
+    "groupIndex": 0,
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_id": "c3m8Wx2M9NSqgJbvh3S6uS"
+  },
+  {
+    "__type__": "cc.Label",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 34
+    },
+    "_enabled": true,
+    "_srcBlendFactor": 1,
+    "_dstBlendFactor": 771,
+    "_useOriginalSize": false,
+    "_string": "High Score: 0",
+    "_N$string": "High Score: 0",
+    "_fontSize": 50,
+    "_lineHeight": 70,
+    "_enableWrapText": true,
+    "_N$file": {
+      "__uuid__": "2b503f3a-af51-42c6-ab68-2f44efc8a0e0"
+    },
+    "_isSystemFontUsed": false,
+    "_spacingX": 0,
+    "_N$horizontalAlign": 1,
+    "_N$verticalAlign": 1,
+    "_N$fontFamily": "Arial",
+    "_N$overflow": 0,
+    "_id": "b8k55/12BAyKppeDOqX8wR"
+  },
+  {
+    "__type__": "cc.Node",
     "_name": "Game",
     "_objFlags": 0,
     "_parent": {
@@ -1366,7 +1458,7 @@
     "_level": 1,
     "_components": [
       {
-        "__id__": 35
+        "__id__": 37
       }
     ],
     "_prefab": null,
@@ -1419,7 +1511,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 34
+      "__id__": 36
     },
     "_enabled": true,
     "menuNode": {
@@ -1431,8 +1523,11 @@
     "playerCarFab": {
       "__uuid__": "18a90ac8-5fca-4ca7-bf98-e30950fb29e7"
     },
+    "highScoreLabel": {
+      "__id__": 35
+    },
     "scoreLabel": {
-      "__id__": 36
+      "__id__": 38
     },
     "touchToStartLabel": {
       "__id__": 31
@@ -1465,7 +1560,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 37
+      "__id__": 39
     },
     "_enabled": true,
     "_srcBlendFactor": 1,
@@ -1499,7 +1594,7 @@
     "_level": 1,
     "_components": [
       {
-        "__id__": 36
+        "__id__": 38
       }
     ],
     "_prefab": null,

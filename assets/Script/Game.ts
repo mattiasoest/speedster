@@ -15,6 +15,9 @@ export default class Game extends cc.Component {
     playerCarFab: cc.Prefab = null;
 
     @property(cc.Label)
+    highScoreLabel: cc.Label = null;
+
+    @property(cc.Label)
     scoreLabel: cc.Label = null;
 
     @property(cc.Label)
@@ -45,6 +48,7 @@ export default class Game extends cc.Component {
 
     private readonly TRAFFIC_SPAWN_RATE = 0.36;
     private readonly CAR_WIDTH: number = 82;
+    private readonly BEST_SCORE_KEY: string = "score_key"
 
     private scheduler: cc.Scheduler = null;
 
@@ -55,6 +59,7 @@ export default class Game extends cc.Component {
     private laneOne: number;
     private laneThree: number;
     private score: number = 0;
+    private highScore: number = 0;
     private cvs: cc.Node = null;
 
 
@@ -86,6 +91,7 @@ export default class Game extends cc.Component {
     }
 
     start () {
+        this.checkLocalHighScore();
         this.menuNode.on(cc.Node.EventType.MOUSE_DOWN, this.startGame, this);
         this.touchToStartLabel.node.runAction(cc.repeatForever(cc.sequence(cc.fadeOut(1.4),cc.delayTime(0.2), cc.fadeIn(1.4))));
         cc.audioEngine.playMusic(this.bgMusic,true);
@@ -107,18 +113,27 @@ export default class Game extends cc.Component {
         this.touchToStartLabel.enabled = true;
         this.titleLabel.enabled = true;
         this.scoreLabel.enabled = false;
+        this.highScoreLabel.enabled = true;
     }
 
     deactivateMenu() {
         this.touchToStartLabel.enabled = false;
         this.titleLabel.enabled = false;
         this.scoreLabel.enabled = true;
+        this.highScoreLabel.enabled = false;
     }
 
     resetGame() {
         cc.audioEngine.play(this.carCrashSound, false, 0.5);
         this.scheduler.unschedule(this.spawnTrafficCar, this);
         this.node.destroyAllChildren();
+
+        if (this.score > this.highScore) {
+            this.highScoreLabel.string = "High score: " + this.score;
+            this.highScore = this.score;
+            this.saveLocalHighScore();
+        }
+
         this.score = 0;
         this.scoreLabel.string = "Score: " + 0;
 
@@ -168,6 +183,19 @@ export default class Game extends cc.Component {
             cc.audioEngine.play(this.pointsSound, false, 0.5);
         }
         this.scoreLabel.string = "Score: " + this.score;
+    }
+
+
+    checkLocalHighScore() {
+        let localBest = cc.sys.localStorage.getItem(this.BEST_SCORE_KEY);
+        if (localBest !== null) {
+            this.highScore = Number(localBest);
+            this.highScoreLabel.string = "High score: " + this.highScore;
+        }
+    }
+
+    saveLocalHighScore() {
+        cc.sys.localStorage.setItem(this.BEST_SCORE_KEY, this.highScore);
     }
 
     getMainCanvas() {
