@@ -225,17 +225,21 @@ export default class Game extends cc.Component {
     }
 
     onKeyDown(event: cc.Event.EventKeyboard) {
-        if (this.currentState === this.GAME_STATE.MENU) {
-            this.startGame();
-            return;
+        if (this.currentState === this.GAME_STATE.PLAY) {
+            switch(event.keyCode) {
+                case cc.macro.KEY.left:
+                    this.switchLeft();
+                    break;
+                case cc.macro.KEY.right:
+                    this.switchRight();
+                    break;
+            }
         }
-        switch(event.keyCode) {
-            case cc.macro.KEY.left:
-                this.switchLeft();
-                break;
-            case cc.macro.KEY.right:
-                this.switchRight();
-                break;
+        else {
+            if (event.keyCode === cc.macro.KEY.back) {
+                cc.audioEngine.stopAll();
+                cc.game.end();
+            }
         }
     }
 
