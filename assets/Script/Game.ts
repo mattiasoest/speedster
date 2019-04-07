@@ -81,11 +81,7 @@ export default class Game extends cc.Component {
         physicsManager.enabled = true;
         physicsManager.gravity = cc.v2(0, 0);
 
-        // Input methods
-        if (!cc.sys.isMobile) {
-            cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
-        }
-        // Let both mobile and pc have touch/click listner.
+        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         this.cvs.on(cc.Node.EventType.TOUCH_START, this.onTouch, this);
     }
 
@@ -235,11 +231,9 @@ export default class Game extends cc.Component {
                     break;
             }
         }
-        else {
-            if (event.keyCode === cc.macro.KEY.back) {
-                cc.audioEngine.stopAll();
-                cc.game.end();
-            }
+        if (event.keyCode === cc.macro.KEY.back) {
+            cc.audioEngine.stopAll();
+            cc.game.end();
         }
     }
 
