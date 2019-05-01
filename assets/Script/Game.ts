@@ -70,7 +70,7 @@ export default class Game extends cc.Component {
 
     onLoad () {
         this.cvs = cc.find("Canvas");
-        let midPoint = this.cvs.width / 2;
+        let midPoint = this.cvs.width / 2  + this.CAR_WIDTH / 2 -5;
         this.laneTwo = midPoint;
         this.laneOne = midPoint - this.CAR_WIDTH * 1.5;
         this.laneThree = midPoint + this.CAR_WIDTH * 1.5;
@@ -233,7 +233,8 @@ export default class Game extends cc.Component {
         }
         if (event.keyCode === cc.macro.KEY.back) {
             cc.audioEngine.stopAll();
-            cc.game.end();
+            // cc.game.end();
+            cc.director.end();
         }
     }
 

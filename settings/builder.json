@@ -27,7 +27,7 @@
     "portrait": true,
     "upsideDown": false
   },
-  "packageName": "org.cocos2d.helloworld",
+  "packageName": "net.b1tcreator.ftraffic",
   "privateKey": "",
   "qqplay": {
     "REMOTE_SERVER_ROOT": "",
