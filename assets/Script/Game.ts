@@ -148,7 +148,7 @@ export default class Game extends cc.Component {
     spawnTrafficCar() {
         const newCar = cc.instantiate(this.trafficCarFab);
         this.node.addChild(newCar);
-        newCar.setPosition(cc.v2(this.generateRandomCarLane(), this.cvs.height * 1.2));
+        newCar.setPosition(cc.v2(this.generateRandomCarLane(), this.cvs.height / 2 * 1.3));
         // Leave a reference to the game object.
         newCar.getComponent('TrafficCar').game = this;
     }
