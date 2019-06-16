@@ -1,0 +1,10 @@
+**/logs/*
+**/logs/debug.log
+*builds/*
+*/temp/*
+
+library/
+temp/
+local/
+build/
+.DS_Store
