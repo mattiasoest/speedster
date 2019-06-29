@@ -11,8 +11,11 @@ export default class Game extends cc.Component {
     @property(cc.Prefab)
     trafficCarFab: cc.Prefab = null;
 
-    @property(cc.Prefab)
-    playerCarFab: cc.Prefab = null;
+    @property(cc.Node)
+    playerCarNode: cc.Node = null;
+
+    @property(cc.Node)
+    container: cc.Node = null;
 
     @property(cc.Label)
     highScoreLabel: cc.Label = null;
@@ -53,7 +56,6 @@ export default class Game extends cc.Component {
     private scheduler: cc.Scheduler = null;
 
     private player: Player = null;
-    private playerNode: cc.Node = null;
 
     private laneTwo: number;
     private laneOne: number;
@@ -70,10 +72,12 @@ export default class Game extends cc.Component {
 
     onLoad () {
         this.cvs = cc.find("Canvas");
+        this.player = this.playerCarNode.getComponent('Player'); 
+        this.player.game = this;
         let midPoint = 0;
         this.laneTwo = midPoint;
-        this.laneOne = midPoint - this.CAR_WIDTH * 1.5;
-        this.laneThree = midPoint + this.CAR_WIDTH * 1.5;
+        this.laneOne = midPoint - this.playerCarNode.width * 1.5;
+        this.laneThree = midPoint + this.playerCarNode.width * 1.5;
         this.scheduler = cc.director.getScheduler();
 
         // Setup physics engine.
@@ -122,7 +126,8 @@ export default class Game extends cc.Component {
     resetGame() {
         cc.audioEngine.play(this.carCrashSound, false, 0.5);
         this.scheduler.unschedule(this.spawnTrafficCar, this);
-        this.node.destroyAllChildren();
+        this.container.destroyAllChildren();
+        this.playerCarNode.active = false;
 
         if (this.score > this.highScore) {
             this.highScoreLabel.string = "High score: " + this.score;
@@ -138,19 +143,18 @@ export default class Game extends cc.Component {
     }
 
     createPlayer() {
-        this.playerNode = cc.instantiate(this.playerCarFab);
-        this.player = this.playerNode.getComponent('Player'); 
-        this.node.addChild(this.playerNode);
-        this.player.game = this;
+        this.playerCarNode.active = true;
         this.player.resetLane();
     }
 
     spawnTrafficCar() {
         const newCar = cc.instantiate(this.trafficCarFab);
-        this.node.addChild(newCar);
-        newCar.setPosition(cc.v2(this.generateRandomCarLane(), this.cvs.height / 2 * 1.3));
         // Leave a reference to the game object.
         newCar.getComponent('TrafficCar').game = this;
+        newCar.x = this.generateRandomCarLane();
+        newCar.y = this.cvs.height * 0.5 * 1.3;
+        
+        this.container.addChild(newCar);
     }
 
     generateRandomCarLane() {
@@ -194,7 +198,7 @@ export default class Game extends cc.Component {
     }
 
     switchLeft() {
-        let currentLane = this.player.getLane();
+        let currentLane = this.player.currentLane;
         if (currentLane === 2 || currentLane === 3) {
             cc.audioEngine.play(this.turnLeftSound, false, 0.5);
             this.player.setLane(--currentLane);
@@ -202,7 +206,7 @@ export default class Game extends cc.Component {
     }
 
     switchRight() {
-        let currentLane = this.player.getLane();
+        let currentLane = this.player.currentLane;
         if (currentLane === 1 || currentLane === 2) {
             cc.audioEngine.play(this.turnRightSound, false, 0.5);
             this.player.setLane(++currentLane);
@@ -221,6 +225,10 @@ export default class Game extends cc.Component {
     }
 
     onKeyDown(event: cc.Event.EventKeyboard) {
+        if (this.currentState === this.GAME_STATE.MENU) {
+            this.startGame();
+            return;
+        }
         if (this.currentState === this.GAME_STATE.PLAY) {
             switch(event.keyCode) {
                 case cc.macro.KEY.left:
@@ -230,11 +238,6 @@ export default class Game extends cc.Component {
                     this.switchRight();
                     break;
             }
-        }
-        if (event.keyCode === cc.macro.KEY.back) {
-            cc.audioEngine.stopAll();
-            // cc.game.end();
-            cc.director.end();
         }
     }
 

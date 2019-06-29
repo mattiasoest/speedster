@@ -6,16 +6,9 @@ const {ccclass, property} = cc._decorator;
 export default class Player extends cc.Component {
 
     // Three lanes; 1 ,2 ,3
-    private currentLane: number
+    currentLane = 2;
 
     game: Game = null;
-
-    start () {
-    }
-
-    update (dt) {
-
-    }
 
     resetLane() {
         this.setLane(2);
@@ -35,16 +28,11 @@ export default class Player extends cc.Component {
             default:
                 throw new Error("Invalid car lane. Got: " + lane);
         }
+        
         this.currentLane = lane;
     }
 
-    getLane() {
-        return this.currentLane;
-    }
-
     onBeginContact(contact, selfCollider, otherCollider) {
-        otherCollider.node.destroy();
-        selfCollider.node.destroy();
         this.game.resetGame();
     }
 }

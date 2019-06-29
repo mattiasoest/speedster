@@ -18,7 +18,7 @@ export default class TrafficCar extends cc.Component {
     }
 
     update (dt) {
-        this.node.setPosition(this.node.x, this.node.y - this.trafficSpeed * dt);
+        this.node.y -= this.trafficSpeed * dt;
         if (!this.isPassed) {
             if (this.node.y < this.game.getPlayer().node.y - this.game.getPlayer().node.height / 2) {
                 this.game.updateScore();
