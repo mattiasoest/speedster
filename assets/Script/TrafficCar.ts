@@ -26,26 +26,32 @@ export default class TrafficCar extends cc.Component {
 
     init(xPos: number, yPos: number) {
         this.alive = true;
-        this.node.x = xPos;
-        this.node.y = yPos;
+        this.node.setPosition(xPos, yPos);
+        this.isPassed = false;
     }
 
     update (dt) {
         if (this.alive) {
-            this.node.y -= this.trafficSpeed * dt;
+            this.node.position.y -= this.trafficSpeed * dt;
+            this.node.setPosition(this.node.position.x, this.node.position.y -= this.trafficSpeed * dt);
             if (!this.isPassed) {
-                if (this.node.y < this.game.getPlayer().node.y - this.game.getPlayer().node.height / 2) {
+                if (this.node.position.y < this.game.getPlayer().node.position.y - this.game.getPlayer().node.height / 2) {
                     this.game.updateScore();
                     this.isPassed = true;
                 }
             }
-            if (this.node.y <= this.lowBound) {
-                this.game.carPool.put(this.node);
+            if (this.node.position.y <= this.lowBound) {
+                this._remove()
             }
         }
     }
 
-    _onReset() {
+    _remove() {
+        this.node.removeFromParent();
         this.game.carPool.put(this.node);
+    }
+
+    _onReset() {
+        this._remove();
     }
 }
