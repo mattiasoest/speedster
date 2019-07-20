@@ -1,4 +1,5 @@
 import Player from "./Player";
+import TrafficCar from "./TrafficCar";
 
 const {ccclass, property} = cc._decorator;
 
@@ -63,12 +64,12 @@ export default class Game extends cc.Component {
     private score: number = 0;
     private highScore: number = 0;
     private cvs: cc.Node = null;
-
     private previousLanePos: number = 0;
 
     public readonly GAME_STATE = { PLAY : 0, MENU : 1 }
 
     currentState = this.GAME_STATE.MENU;
+    carPool: cc.NodePool = null;
 
     onLoad () {
         this.cvs = cc.find("Canvas");
@@ -80,6 +81,12 @@ export default class Game extends cc.Component {
         this.laneThree = midPoint + this.playerCarNode.width * 1.5;
         this.scheduler = cc.director.getScheduler();
 
+        this.carPool = new cc.NodePool();
+
+        for (let i = 0; i < 5; i++) {
+            this.carPool.put(cc.instantiate(this.trafficCarFab));
+        }
+
         // Setup physics engine.
         let physicsManager = cc.director.getPhysicsManager();
         physicsManager.enabled = true;
@@ -90,7 +97,7 @@ export default class Game extends cc.Component {
     }
 
 
-    start () {
+    start () {        
         this.checkLocalHighScore();
         this.touchToStartLabel.node.runAction(cc.repeatForever(cc.sequence(cc.fadeOut(1.4),cc.delayTime(0.2), cc.fadeIn(1.4))));
         cc.audioEngine.playMusic(this.bgMusic,true);
@@ -105,7 +112,6 @@ export default class Game extends cc.Component {
             this.scheduler.schedule(this.spawnTrafficCar, this, this.TRAFFIC_SPAWN_RATE, false);
             this.currentState = this.GAME_STATE.PLAY;
             cc.audioEngine.play(this.startGameSound, false, 0.3);
-
         }
     }
 
@@ -126,7 +132,7 @@ export default class Game extends cc.Component {
     resetGame() {
         cc.audioEngine.play(this.carCrashSound, false, 0.5);
         this.scheduler.unschedule(this.spawnTrafficCar, this);
-        this.container.destroyAllChildren();
+        cc.systemEvent.emit('reset');
         this.playerCarNode.active = false;
 
         if (this.score > this.highScore) {
@@ -144,15 +150,24 @@ export default class Game extends cc.Component {
 
     createPlayer() {
         this.playerCarNode.active = true;
+        this.player.alive = true;
         this.player.resetLane();
     }
 
     spawnTrafficCar() {
-        const newCar = cc.instantiate(this.trafficCarFab);
+        let newCar = null;
+        if (this.carPool.size() <= 0) {
+            newCar = cc.instantiate(this.trafficCarFab);
+        }
+        else {
+            newCar = this.carPool.get();
+        }
         // Leave a reference to the game object.
-        newCar.getComponent('TrafficCar').game = this;
-        newCar.x = this.generateRandomCarLane();
-        newCar.y = this.cvs.height * 0.5 * 1.3;
+        const car = newCar.getComponent('TrafficCar');
+        car.game = this;
+        const x = this.generateRandomCarLane();
+        const y = this.cvs.height * 0.5 * 1.3;
+        car.init(x,y);
         
         this.container.addChild(newCar);
     }

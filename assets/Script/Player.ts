@@ -10,6 +10,8 @@ export default class Player extends cc.Component {
 
     game: Game = null;
 
+    alive = true;
+
     resetLane() {
         this.setLane(2);
     }
@@ -33,6 +35,11 @@ export default class Player extends cc.Component {
     }
 
     onBeginContact(contact, selfCollider, otherCollider) {
+        contact.disabled = true;
+        if (!this.alive) {
+            return;
+        }
+        this.alive = false;
         this.game.resetGame();
     }
 }
